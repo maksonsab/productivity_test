@@ -33,7 +33,7 @@ class Survey(Base):
     creation_date = Column(Date)
     visible = Column(Boolean, default=True)
     description = Column(String)
-    servey_type = Column(Integer, max=2)
+    servey_type = Column(Integer)
 
 
 
