@@ -11,7 +11,13 @@ SQLALCHEMY_DATABASE_URL = environ.get('PRODUCTIVITY_DB')
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
-session = Session(engine)
+db_session = Session(engine)
 Base = declarative_base()
 
 
+def get_session()-> Session:
+    try:
+        session = db_session
+        yield session
+    finally:
+        session.close()

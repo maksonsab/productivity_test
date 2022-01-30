@@ -9,8 +9,12 @@
 <body>
     {% block header %}
     <center>
-        <h2><a href="/">Главная</a></h2>
+        <div class="header-item">
+            <h2><a href="/">Главная</a></h2>
+            <h2><a href="/create">Создать опрос</a></h2>        
+        </div>
     </center>
+
     {% endblock %}
 
     {% block content %}
