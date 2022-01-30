@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Все опросы</h1>
+    {% for suv in data %}
+    <h2><a href="/survey/{{suv.id}}"> {{suv.title }}</a></h2>
+    <p>Описание</p>
+    {{suv.description}}
+    {% endfor %}
+{% endblock %}
+

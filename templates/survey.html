@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <h1>Название теста: {{data.title}}</h1>
+        {% for q in data.questions %}
+            <p>{{q.text}}</p>
+            
+        {% endfor %}
+        <h2> Автор: {%set full_name = data.creator.first_name + ' ' + data.creator.last_name %} <a href="/user/{{data.creator.login}}">{{full_name}}</a></h2>
+{% endblock %}
