@@ -5,8 +5,6 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from app import routes
 
 
-from app.routes import users
-#import app.models as models
 
 app = FastAPI()
 app.include_router(routes.router)
