@@ -9,7 +9,7 @@ from sqlalchemy.sql.sqltypes import Date
 from sqlalchemy.orm.session import Session
 
 
-from db import Base, get_session
+from app.db import Base, get_session
 
 
 class User(Base):

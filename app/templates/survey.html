@@ -12,5 +12,5 @@
 
             
         {% endfor %}
-        <h2> Автор: {%set full_name = data.creator.first_name + ' ' + data.creator.last_name %} <a href="/user/{{data.creator.login}}">{{full_name}}</a></h2>
+        <h2> Автор: {%set full_name = data.creator.first_name + ' ' + data.creator.last_name %} <a href="/users/{{data.creator.login}}">{{full_name}}</a></h2>
 {% endblock %}

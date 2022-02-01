@@ -22,3 +22,5 @@ uvicorn==0.15.0
 uvloop==0.16.0
 watchgod==0.7
 websockets==10.1
+python-jose
+passlib[bcrypt]
