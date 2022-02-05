@@ -1,14 +1,14 @@
 import time
 from sqlalchemy.orm.session import Session
 from fastapi import Request
+#from fastapi.security import 
 
 from jose import jwt
 from passlib.hash import bcrypt
 
 from app.models import User
 from app.db import get_session
-from .. config import JWT_SECRET, PASSWORD_SATL
-
+from .. config import JWT_SECRET
 
 
 def get_user_session(request:Request):

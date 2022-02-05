@@ -6,8 +6,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
+from app.config import SQLALCHEMY_DATABASE_URL
 
-SQLALCHEMY_DATABASE_URL = environ.get('PRODUCTIVITY_DB')
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -21,3 +21,8 @@ def get_session()-> Session:
         yield session
     finally:
         session.close()
+
+
+def init_db():
+    print('Создаем новую базу данных!')
+    Base.metadata.create_all(engine)
