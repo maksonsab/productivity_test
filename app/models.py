@@ -12,6 +12,7 @@ from sqlalchemy.orm.session import Session
 from app.db import Base, get_session
 
 
+
 class User(Base):
     """Пользователя"""
     __tablename__ = 'users'
@@ -30,13 +31,6 @@ class User(Base):
         self.last_name = ln
         self.pwd = pwd
 
-    @staticmethod
-    def authorize(username:str, pwd:str):
-        user = User.get_user(login=username)
-        if user:
-            if user.pwd == pwd:
-                return user
-        return False
 
 
     def get_user(session: Session = next(get_session()), login:str = None, id:int = None):

@@ -4,6 +4,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from app import routes
 
+from app.modules import auth
+
 
 
 app = FastAPI()

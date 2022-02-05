@@ -11,7 +11,11 @@
     <center>
         <div class="header-item">
             <h2><a href="/">Главная</a></h2>
-            <h2><a href="/create">Создать опрос</a></h2>        
+            <h2><a href="/create">Создать опрос</a></h2>
+            <h2><a href="/login">Войти</a></h2>
+            {% if session %}
+            <h2>Привет, {{session.login}}!</h2>
+            {% endif %}        
         </div>
     </center>
 
