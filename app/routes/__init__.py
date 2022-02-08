@@ -15,7 +15,6 @@ router.include_router(auth.router)
 def index(request:Request):
     resp = app.models.Vote.get_them_all()
     user_session = authorize.get_user_session(request)
-    print(user_session)
     return templates.TemplateResponse('index.html', {'request':request, 'title':'Главная', 'data': resp, 'user': user_session })
 
 

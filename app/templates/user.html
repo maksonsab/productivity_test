@@ -3,9 +3,9 @@
 {% block content %}
 
 <h1>Информация о пользователе {{data.login}}</h1>
-<p>Всего опросов: {{ data.surveys|length }}</p>
+<p>Всего опросов: {{ data.votes|length }}</p>
     <h2>Опросы</h2>
-    {% for suv in data.surveys %}
+    {% for suv in data.votes %}
     <h2><a href="/votes/get/{{suv.id}}">{{suv.title}}</a></h2>
     <p>{{suv.description}}</p>
 

@@ -12,10 +12,10 @@
                 {% set counter = counter.index0 %}
                <input type="radio" name="answer" value="{{counter}}">{{a }}
                {% endfor %}
-               {% if not data.anon and not user %}
-               <p>Анонимное голосование ЗАПРЕЩЕНО!</p>
+                {% if allowed['allowed'] %}
+               <span><input type="submit"></span>
                {% else %}
-                <span><input type="submit"></span>
+               <p>{{allowed['reason']}}</p>
                 {% endif %}
             </form>
 

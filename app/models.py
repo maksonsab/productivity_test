@@ -1,10 +1,7 @@
 import datetime
 
-from fastapi import Depends
 from sqlalchemy import Boolean, String, Integer, Column, ForeignKey, Date, ARRAY
-from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import Date
 from sqlalchemy.orm.session import Session
 
@@ -14,7 +11,7 @@ from app.db import Base, get_session
 
 
 class User(Base):
-    """Пользователя"""
+    """Таблица с пользователями"""
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
@@ -22,7 +19,9 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     pwd = Column(String)
-    votes = relationship("Vote", back_populates="creator")
+
+
+    votes = relationship("Vote", back_populates="creator") #для быстрого получения всех голосований пользователя
 
 
     def __init__(self, login, fn, ln, pwd):
@@ -67,7 +66,7 @@ class Vote(Base):
         self.anon = anon
         self.revote = revote
 
-   
+    @staticmethod
     def get_them_all(session: Session = next(get_session())):
         return session.query(Vote).all()
 
@@ -79,6 +78,13 @@ class Vote(Base):
     @staticmethod
     def get_all_from_user(user_id, session: Session = next(get_session()), ):
         return session.query(Vote).filter(Vote.creator_id == user_id).all()
+    
+    @staticmethod
+    def is_user_vote(user_id: int, vote_id: int) -> bool:
+        '''Голосовал ли пользователь'''
+        vote = Vote.get_vote(vote_id)
+        pass
+
 
 
 class VoteQuestion(Base):
