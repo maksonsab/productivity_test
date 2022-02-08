@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form  method="post" action="/registration" class="registration-form">
+        <div id="registration-input">
+            <label for="login">Логин:</label>
+            <input type="text" name="login" placeholder="Логин">
+        </div>
+        <div id="registration-input">
+            <label for="f_n">Имя:</label>
+            <input type="text" name="f_n" placeholder="Имя">
+        </div>
+        <div id="registration-input">
+            <label for="l_n">Фамилия:</label>
+            <input type="text" name="l_n" placeholder="Фамилия">
+        </div>
+        <div id="registration-input">
+            <label for="password">Пароль:</label>
+            <input type="password" name="password" placeholder="Пароль">
+        </div>
+        <input id="registration-submit" type="submit" value="Регистрация">
+
+    </form>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+.header-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.registration-form {
+    width: 15%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+#registration-input{
+    display: flex;
+    justify-content: space-between;
+    padding: 1%;
+}
+
+#registration-submit{
+    margin: auto;
+    width: 40%;
+}
+
+
+.new-vote-form {
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+}
+
+.vote-check {
+    flex-direction: row;
+}

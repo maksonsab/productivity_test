@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% set counter = -1 %}
+        <h1>Название: {{data.title}}</h1>
+        {% for q in data.questions %}
+            <p>{{q.text}}</p>
+            <form action="/votes/vote/{{data.id}}" method="post">
+                <input type="hidden" name="question_id" value="{{q.id}}">
+                {% for a in q.answers %}
+                {% set counter = loop %}
+                {% set counter = counter.index0 %}
+               <input type="radio" name="answer" value="{{counter}}">{{a }}
+               {% endfor %}
+               {% if not data.anon and not user %}
+               <p>Анонимное голосование ЗАПРЕЩЕНО!</p>
+               {% else %}
+                <span><input type="submit"></span>
+                {% endif %}
+            </form>
+
+            
+        {% endfor %}
+        <h2> Автор: {%set full_name = data.creator.first_name + ' ' + data.creator.last_name %} <a href="/users/{{data.creator.login}}">{{full_name}}</a></h2>
+{% endblock %}

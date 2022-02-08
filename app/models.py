@@ -22,7 +22,7 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     pwd = Column(String)
-    surveys = relationship("Survey", back_populates="creator")
+    votes = relationship("Vote", back_populates="creator")
 
 
     def __init__(self, login, fn, ln, pwd):
@@ -41,67 +41,79 @@ class User(Base):
             user = session.query(User).get(id)
             return user
 
-class Survey(Base):
-    """Хранятся опросы"""
-    __tablename__ = 'surveys'
+class Vote(Base):
+    """Хранятся голосования"""
+    __tablename__ = 'votes'
     id = Column(Integer, primary_key=True)
     title = Column(String)
     creator_id = Column(Integer, ForeignKey("users.id"))
-    creator = relationship("User", back_populates="surveys")
     creation_date = Column(Date)
     visible = Column(Boolean, default=True)
     description = Column(String)
-    servey_type = Column(Integer) #1 голосование 2 - Опрос
+    closed = Column(Boolean, default=False)
+    anon = Column(Boolean, default= True)
+    revote = Column(Boolean, default=True)
 
-    questions = relationship("Question", back_populates="survey")
+    creator = relationship("User", back_populates="votes")
+    questions = relationship("VoteQuestion", back_populates="vote")
+    answers = relationship("VoteAnswer", back_populates="votes")
 
 
-    def __init__(self, title, creator_id, description, stype):
+    def __init__(self, title, creator_id, description, anon, revote):
         self.title = title
         self.creator_id = creator_id
         self.creation_date = datetime.datetime.now()
-        self.visible = 1
         self.description = description
-        self.servey_type = stype
+        self.anon = anon
+        self.revote = revote
 
    
     def get_them_all(session: Session = next(get_session())):
-        return session.query(Survey).all()
+        return session.query(Vote).all()
 
 
     @staticmethod
-    def get_suv(id, session: Session = next(get_session())):
-        suv = session.query(Survey).filter(Survey.id == id)
-        return suv.first()
+    def get_vote(id, session: Session = next(get_session())):
+        return session.query(Vote).filter(Vote.id == id).first()
 
     @staticmethod
     def get_all_from_user(user_id, session: Session = next(get_session()), ):
-        surveys = session.query(Survey).filter(Survey.creator_id == user_id).all()
-        return surveys
+        return session.query(Vote).filter(Vote.creator_id == user_id).all()
 
 
-class Question(Base):
-    """Хранятся вопросы"""
-    __tablename__ = 'questions'
+class VoteQuestion(Base):
+    """Хранятся вопросы для голосования"""
+    __tablename__ = 'votes_questions'
     id = Column(Integer, primary_key=True)
-    survey_id = Column(Integer, ForeignKey("surveys.id"))
+    vote_id = Column(Integer, ForeignKey("votes.id"))
     text = Column(String)
-    answer = Column(ARRAY(String))
+    answers = Column(ARRAY(String))
 
-    survey = relationship("Survey", back_populates="questions")
+    all_answered = relationship("VoteAnswer", back_populates="question")
+    vote = relationship("Vote", back_populates="questions")
 
 
-    def __init__(self, survei_id, text, answer) -> None:
-        self.survey_id = survei_id
+    def __init__(self, vote_id, text, answers) -> None:
+        self.vote_id = vote_id
         self.text = text
-        self.answer = answer
+        self.answers = answers
 
 
-class Answer(Base):
-    """Хранятся ответы на вопросы"""
-    __tablename__ = 'answers'
+class VoteAnswer(Base):
+    """Хранятся ответы на голосования"""
+    __tablename__ = 'vote_answers'
     id = Column(Integer(), primary_key=True)
     user_id = Column(Integer(),ForeignKey('users.id'), nullable=True)
-    survey_id = Column(Integer(), ForeignKey('surveys.id'), nullable=False)
-    answers = Column(ARRAY(String))
+    vote_id = Column(Integer(), ForeignKey('votes.id'), nullable=False)
+    question_id = Column(Integer(), ForeignKey('votes_questions.id'))
+    answer = Column(Integer(), nullable=False)
+
+    question = relationship("VoteQuestion", back_populates="all_answered")
+    votes = relationship("Vote", back_populates='answers')
+
+    def __init__(self, user_id, vote_id, question_id, answer):
+        self.user_id = user_id
+        self.vote_id = vote_id
+        self.question_id = question_id
+        self.answer = answer
 

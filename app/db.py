@@ -9,7 +9,6 @@ from sqlalchemy.orm.session import Session
 from app.config import SQLALCHEMY_DATABASE_URL
 
 
-
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 db_session = Session(engine)
 Base = declarative_base()

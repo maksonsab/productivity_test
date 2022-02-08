@@ -1,0 +1,22 @@
+{% extends 'base.html'  %}
+{% block content %}
+<form action="/votes/add" method="post" class="new-vote-form">
+    <label for="title">Вопрос:</label>
+    <input type="text" name="title" placeholder="Название голосования">
+    <label for="description">Описание голосования:</label>
+    <input type="text" name="description" placeholder="Описание">
+    <label for="question">Текст вопроса</label>
+    <input type="text" placeholder="Вопрос..." name="question">
+    <label for="answer">Ответ:</label>
+    <input type="textarea" placeholder="Перечисли варианты ответа через запятую..." name="answers">
+    <div class="vote-check">
+        <input type="checkbox" name="anon" checked ><label for="anon">Анонимное голосование</label>
+    </div>
+    <div class="vote-check">
+        <input type="checkbox" name="revote" checked><label for="revote">Повторное голосование</label>
+    </div>
+    <input type="submit" value="Добавть">
+</form>
+
+
+{% endblock %}

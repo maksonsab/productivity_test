@@ -39,6 +39,10 @@ def create_user(login: str, fn: str, ln: str, pwd: str, session: Session = next(
     new_user = User(login, fn, ln, secure_pwd)
     session.add(new_user)
     session.commit()
+    return {'New user':{
+        'id': new_user.id,
+        'login': new_user.login
+    }}
 
 class Authentication(object):
 
