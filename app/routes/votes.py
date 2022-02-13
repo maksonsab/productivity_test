@@ -85,7 +85,7 @@ def add_vote(
         new_question = VoteQuestion(new_vote.id, question, answers)
         db_session.add(new_question)
         db_session.commit()
-        RedirectResponse('/', status_code=status.HTTP_303_SEE_OTHER)
+        return RedirectResponse('/', status_code=status.HTTP_303_SEE_OTHER)
 
     return RedirectResponse('/login', status_code=status.HTTP_303_SEE_OTHER)
 
@@ -119,7 +119,7 @@ def edit_vote_update(vote_id: int, request: Request,
     user = auth.get_user_session(request)
     vote = Vote.get_vote(vote_id)
     if not vote:
-        Response('Not found', status_code=status.HTTP_404_NOT_FOUND)
+        return Response('Not found', status_code=status.HTTP_404_NOT_FOUND)
     if not user or user.id != vote.creator_id:
         return {'Edit' : 'Not allowed'}
     print(visible)
@@ -134,7 +134,7 @@ def delete(vote_id: int, request:Request):
     user = auth.get_user_session(request)
     vote = Vote.get_vote(vote_id)
     if not vote:
-        Response('Not found', status_code=status.HTTP_404_NOT_FOUND)
+        return Response('Not found', status_code=status.HTTP_404_NOT_FOUND)
     if user and user.id == vote.creator_id:
         vote.delete()
     return {'Vote_id': vote.id,
