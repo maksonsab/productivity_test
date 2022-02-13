@@ -34,3 +34,12 @@
 .vote-check {
     flex-direction: row;
 }
+
+.edit-question-form {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+
+}

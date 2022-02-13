@@ -5,11 +5,19 @@
 <h1>Информация о пользователе {{data.login}}</h1>
 <p>Всего опросов: {{ data.votes|length }}</p>
     <h2>Опросы</h2>
-    {% for suv in data.votes %}
-    <h2><a href="/votes/get/{{suv.id}}">{{suv.title}}</a></h2>
-    <p>{{suv.description}}</p>
+    {% if not user or user.login != data.login %}
+        {% for vote in data.votes if vote.visible %}
+            <h2><a href="/votes/get/{{vote.id}}">{{vote.title}}</a></h2>
+            <p>{{vote.description}}</p>
 
 
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        {% for vote in data.votes %}
+            <h2><a href="/votes/get/{{vote.id}}">{{vote.title}}</a></h2>
+            <p>{{vote.description}}</p>
+        {% endfor %}
+    {% endif %}
+
 
 {% endblock %}

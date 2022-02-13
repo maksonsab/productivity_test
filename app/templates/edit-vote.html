@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<form class="edit-question-form" method="post" action="/votes/edit/{{vote.id}}">
+    <input type="hidden" value="{{vote.id}}" name="vote_id">
+    <label for="title">Название голосования:</label>
+    <input type="text" name="title" value="{{vote.title}}">
+
+    <label for="description">Описание:</label>
+    <input type="text" name="description" value="{{vote.description}}">
+    {% if not vote.answers %}
+        {% for question in vote.questions %}
+            <label for="question">Вопрос:</label>
+            <input type="text" name="question" value="{{question.text}}">
+            {% set answers_str = ''%}
+            <label for="answers">Ответы:</label>
+            <input type="text" value="{{answers}}" name="answers">
+        {% endfor %}
+    {% else %} <p>Редактировать вопросы нельзя, так как уже были ответы!</p>
+    {% endif %}
+    <div class="checkboxes">
+        <div>
+            <label for="anon">Анонимное голосование</label> 
+            <input type="checkbox" name="anon" {% if vote.anon %} checked {% endif %}>
+
+            <label for="revote">Повторное голосование</label>
+            <input type="checkbox" name="revote" {% if vote.revote %} checked {% endif %}>
+        </div>
+        <div>
+            <label for="visible">Видимое голосование</label>
+            <input type="checkbox" name="visible" {% if vote.visible %} checked {% endif %}>
+
+            <label for="closed">Голосование закрыто</label>
+            <input type="checkbox" name="closed" {% if vote.closed %} checked {% endif %}>
+        </div>
+    </div>
+    <input type="submit" value="Сохранить" id="registration-submit">
+</form>
+<form class="edit-question-form" id="registration-submit" method="post" action="/votes/delete/{{vote.id}}">
+    <input type="submit" value="Удалить">
+</form>
+
+{% endblock %}

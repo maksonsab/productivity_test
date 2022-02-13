@@ -14,7 +14,7 @@
             <h2><a href="/">Главная</a></h2>
             {% if user %}
             <h2><a href="/votes/add">Добавить голосование</a></h2>
-            <h2>Привет, {{user.login}}!</h2>
+            <h2>Привет, <a href="/users/{{user.login}}">{{user.login}}!</a></h2>
             {% endif %}
             {% if not user %}
             <h2><a href="/login">Войти</a></h2>

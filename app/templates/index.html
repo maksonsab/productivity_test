@@ -2,8 +2,8 @@
 
 {% block content %}
     <h1>Все опросы</h1>
-    {% for suv in data %}
-    <h2><a href="/votes/get/{{suv.id}}"> {{suv.title }}</a></h2>
+    {% for suv in data if suv.visible %}
+    <h2><a href="/votes/get/{{suv.id}}"> {{suv.title }}</a>{% if suv.closed %} <b>(Закрыто)</b>{% endif %}</h2>
     <p>Описание</p>
     {{suv.description}}
     {% endfor %}

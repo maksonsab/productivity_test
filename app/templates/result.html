@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<h1>Результаты опроса: "{{ vote.title }}"</h1>
+{% for q in vote.questions %}
+    <p><b>Вопрос:</b> {{ q.text }}</p>
+    {% for answer in q.answers %}
+    {% set counter = loop.index - 1 %}
+    <p><b>{{answer}}</b> ({{results[counter][0]}}) - {{results[counter][1]}}%</p>
+    {% endfor %}
+
+
+{% endfor %}
+{% endblock %}

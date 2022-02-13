@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Boolean, String, Integer, Column, ForeignKey, Date, ARRAY
+from sqlalchemy import Boolean, String, Integer, Column, ForeignKey, Date, ARRAY, and_, delete
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import Date
 from sqlalchemy.orm.session import Session
@@ -47,6 +47,7 @@ class Vote(Base):
     title = Column(String)
     creator_id = Column(Integer, ForeignKey("users.id"))
     creation_date = Column(Date)
+    edit_date = Column(Date)
     visible = Column(Boolean, default=True)
     description = Column(String)
     closed = Column(Boolean, default=False)
@@ -65,6 +66,46 @@ class Vote(Base):
         self.description = description
         self.anon = anon
         self.revote = revote
+
+    def update(self, title, description, anon, revote, closed, visible, session: Session = next(get_session())):
+        self.title = title
+        self.description = description
+        self.anon = anon
+        self.revote = revote
+        self.edit_date = datetime.datetime.now()
+        self.closed = closed
+        self.visible = visible
+        session.commit()
+    
+    def delete(self, session: Session = next(get_session())):
+        VoteAnswer.delete(self.id)
+        VoteQuestion.delete(self.id)
+        session.delete(self)
+        session.commit()
+
+
+    def get_results(self):
+        length = len(self.answers)
+        list_ans = list(range(len(self.questions[0].answers)))
+        result = dict()
+        for ans in list_ans:
+            result[ans] = [0,]
+        try:
+            for answer in self.answers: 
+                if answer.answer not in list_ans:
+                    raise ValueError
+                result[answer.answer][0] += 1            
+        except Exception as e:
+            print(e)
+        print(result)
+        for key in result:
+            value = result.get(key)
+            percent = value[0] / (length * 0.01)
+            value.append(round(percent,2))
+            result[key] = value        
+        
+        return result
+        
 
     @staticmethod
     def get_them_all(session: Session = next(get_session())):
@@ -104,6 +145,16 @@ class VoteQuestion(Base):
         self.text = text
         self.answers = answers
 
+    def update(self, text, answers, session: Session = next(get_session())) -> None:
+        self.text = text
+        self.answers = answers
+        session.commit()
+
+    @staticmethod
+    def delete(vote_id, session: Session = next(get_session())):
+        session.execute(delete(VoteQuestion).where(VoteQuestion.vote_id == vote_id))
+
+
 
 class VoteAnswer(Base):
     """Хранятся ответы на голосования"""
@@ -122,4 +173,8 @@ class VoteAnswer(Base):
         self.vote_id = vote_id
         self.question_id = question_id
         self.answer = answer
-
+    
+    @staticmethod
+    def delete(vote_id, session: Session = next(get_session())):
+        session.execute(delete(VoteAnswer).where(VoteAnswer.vote_id == vote_id))
+        

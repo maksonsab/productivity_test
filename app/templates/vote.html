@@ -2,7 +2,10 @@
 
 {% block content %}
 {% set counter = -1 %}
-        <h1>Название: {{data.title}}</h1>
+        <h1>Название: {{data.title}}{% if data.closed %} <b>(Закрыто)</b>{% endif %}</h1>
+        {% if not data.visible %} <p>Голосование скрыто</p> {% endif %}
+        {% if data.edit_date %}<p>Изменено: {{data.edit_date}}</p>{% endif %}
+        {% if author %} <a href="/votes/edit/{{data.id}}">Редактировать</a> {% endif %}
         {% for q in data.questions %}
             <p>{{q.text}}</p>
             <form action="/votes/vote/{{data.id}}" method="post">
@@ -16,6 +19,7 @@
                <span><input type="submit"></span>
                {% else %}
                <p>{{allowed['reason']}}</p>
+               <a href="/votes/result/{{data.id}}">Результаты</a>
                 {% endif %}
             </form>
 

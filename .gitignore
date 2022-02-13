@@ -128,3 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 /app/server.py
+
+#alembic
+alembic.ini
+alembic/
