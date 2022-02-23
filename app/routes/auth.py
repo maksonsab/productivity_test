@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Request, Response, Form, responses, status, Cookie
-from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 
 
@@ -15,14 +14,14 @@ router = APIRouter(tags=['auth'])
 def login(request:Request):
     return templates.TemplateResponse('login.html', {'request': request, 'title': 'Авторизация','user': auth.get_user_session(request)})
 
-@router.post('/login', response_class=HTMLResponse)
+@router.post('/login', response_class=RedirectResponse)
 def authorize(request: Request, login: str = Form(...), password: str = Form(...), ):
     user = auth.auth_user(login, password,)
     if user:
         print(f'user: {user}')
-        response = Response('<a href="/">Главная<a>', media_type='text/html')
-        response.set_cookie(key='session', value=user)
-        return response #RedirectResponse(url='/', status_code=status.HTTP_303_SEE_OTHER)
+        response = RedirectResponse(url='/', status_code=status.HTTP_302_FOUND)
+        response.set_cookie(key='session', value=user, httponly=True, expires=36000)
+        return response
     return RedirectResponse(url='/login', status_code = status.HTTP_303_SEE_OTHER)
      
 @router.get('/registration', response_class=HTMLResponse)
